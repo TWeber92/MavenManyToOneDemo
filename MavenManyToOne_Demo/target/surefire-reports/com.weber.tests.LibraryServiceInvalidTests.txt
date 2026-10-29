@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.weber.tests.LibraryServiceInvalidTests
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.074 s -- in com.weber.tests.LibraryServiceInvalidTests

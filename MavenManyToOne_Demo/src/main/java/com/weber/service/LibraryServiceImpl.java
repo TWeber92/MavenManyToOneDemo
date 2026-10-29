@@ -12,16 +12,16 @@ import com.weber.model.Member;
 import com.weber.repository.LibraryRepository;
 import com.weber.utility.Validator;
 
-public class LibraryServiceImpl implements LibraryService{
-	
+public class LibraryServiceImpl implements LibraryService {
+
 	private LibraryRepository repository;
-	
+
 	public LibraryServiceImpl() {
 		this.repository = new LibraryRepository();
 	}
-	
-	public List<MemberDTO> selectMemberByISBN(String isbn) throws SQLException, Exception {		
-		Validator.validateBookData(new BookDTO("billy", "jean", isbn));
+
+	public List<MemberDTO> selectMemberByISBN(String isbn) throws SQLException, Exception {
+		Validator.validateBookData(new BookDTO(9, "billy", "jean", isbn));
 		ResultSet resultSet = repository.selectMemberByISBN(isbn);
 		List<MemberDTO> members = new ArrayList<MemberDTO>();
 		while (resultSet.next()) {
@@ -34,7 +34,7 @@ public class LibraryServiceImpl implements LibraryService{
 		resultSet.close();
 		return members;
 	}
-	
+
 	public int insertMember(MemberDTO memberDTO) throws SQLException, Exception {
 		Validator.validateMemberData(memberDTO);
 		Member member = new Member();
@@ -56,10 +56,11 @@ public class LibraryServiceImpl implements LibraryService{
 		ResultSet resultSet = repository.selectBooks();
 		List<BookDTO> books = new ArrayList<BookDTO>();
 		while (resultSet.next()) {
+			int memberId = resultSet.getInt("member_id");
 			String title = resultSet.getString("title");
 			String author = resultSet.getString("author");
 			String isbn = resultSet.getString("isbn");
-			BookDTO book =  new BookDTO(title, author, isbn);
+			BookDTO book = new BookDTO(memberId, title, author, isbn);
 			books.add(book);
 		}
 		resultSet.close();
@@ -67,14 +68,14 @@ public class LibraryServiceImpl implements LibraryService{
 	}
 
 	public int assignMemberToBook(int memberId, String isbn) throws SQLException, Exception {
-		Validator.validateBookData(new BookDTO("billy", "jean", isbn));
+		Validator.validateBookData(new BookDTO(9, "billy", "jean", isbn));
 		return repository.assignMemberToBook(memberId, isbn);
 	}
 
 	public int updateBookAuthor(BookDTO bookDTO) throws SQLException, Exception {
 		Validator.validateBookData(bookDTO);
 		Book book = new Book();
-		book.setId(bookDTO.getId());
+		book.setId(bookDTO.getMemberId());
 		book.setAuthor(bookDTO.getAuthor());
 		return repository.updateBookAuthor(book);
 	}

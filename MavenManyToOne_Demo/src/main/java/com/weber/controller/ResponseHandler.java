@@ -23,13 +23,13 @@ public class ResponseHandler implements HttpHandler {
 	private final Logger logger;
 	private final ObjectMapper objMapper;
 	private final ResourceBundle message;
-	
+
 	public ResponseHandler(LibraryService libraryService) {
-        this.libraryService = libraryService;
-        this.objMapper = new ObjectMapper();
-        this.logger = Logger.getLogger(LibraryApp.class.getName());
-        this.message = ResourceBundle.getBundle("err-messages");
-    }
+		this.libraryService = libraryService;
+		this.objMapper = new ObjectMapper();
+		this.logger = Logger.getLogger(LibraryApp.class.getName());
+		this.message = ResourceBundle.getBundle("err-messages");
+	}
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
@@ -156,7 +156,7 @@ public class ResponseHandler implements HttpHandler {
 	private int updateBookAuthor(String author, int bookId) throws WeberLibraryException {
 		try {
 			BookDTO bookDTO = new BookDTO();
-			bookDTO.setId(bookId);
+			bookDTO.setMemberId(bookId);
 			bookDTO.setTitle("Blank");
 			bookDTO.setAuthor(author);
 			bookDTO.setIsbn("1234567890");

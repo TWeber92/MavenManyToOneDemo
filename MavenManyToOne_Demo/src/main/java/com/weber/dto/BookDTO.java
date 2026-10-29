@@ -1,28 +1,29 @@
 package com.weber.dto;
 
 public class BookDTO {
-	
-	private int id;
+
+	private int member_id;
 	private String title;
 	private String author;
 	private String isbn;
-	
+
 	public BookDTO() {
-		
+
 	}
-	
-	public BookDTO(String title, String author, String isbn) {
+
+	public BookDTO(int member_id, String title, String author, String isbn) {
+		this.member_id = member_id;
 		this.title = title;
 		this.author = author;
 		this.isbn = isbn;
 	}
 
-	public int getId() {
-		return id;
+	public int getMemberId() {
+		return member_id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setMemberId(int member_id) {
+		this.member_id = member_id;
 	}
 
 	public String getTitle() {
@@ -53,7 +54,5 @@ public class BookDTO {
 	public String toString() {
 		return "BookDTO [title=" + title + ", author=" + author + ", isbn=" + isbn + "]";
 	}
-	
-	
 
 }

@@ -1,0 +1,12 @@
+com\weber\utility\DatabaseConnector.class
+com\weber\model\Book.class
+com\weber\dto\BookDTO.class
+com\weber\repository\LibraryRepository.class
+com\weber\service\LibraryService.class
+com\weber\dto\MemberDTO.class
+com\weber\LibraryApp.class
+com\weber\model\Member.class
+com\weber\service\LibraryServiceImpl.class
+com\weber\exception\WeberLibraryException.class
+com\weber\utility\Validator.class
+com\weber\controller\ResponseHandler.class
