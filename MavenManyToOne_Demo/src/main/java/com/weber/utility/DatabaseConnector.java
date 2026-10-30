@@ -26,6 +26,12 @@ public class DatabaseConnector {
 				// Render is providing a Postgres URL
 				String user = System.getenv("DATABASE_USERNAME");
 				String pass = System.getenv("DATABASE_PASSWORD");
+				try {
+					// Force the JVM to register the Postgres driver
+					Class.forName("org.postgresql.Driver");
+				} catch (ClassNotFoundException e) {
+					throw new WeberLibraryException("PostgreSQL Driver not found: " + e.getMessage());
+				}
 				// IMPORTANT: Add currentSchema=library so Postgres knows where to look
 				String postgresUrl = dbUrl + "?currentSchema=library";
 
