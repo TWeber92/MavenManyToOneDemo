@@ -57,6 +57,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>app</finalName> <!-- Add this line -->
 		<plugins>
 			<!-- Fat Jar Plugin -->
 			<plugin>
