@@ -1,0 +1,21 @@
+# Maven build artifacts
+target/
+dependency-reduced-pom.xml
+
+# Compiled class files
+*.class
+
+# Eclipse / VS Code project files
+.settings/
+.project
+.classpath
+.idea/
+*.iml
+*.vscode/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
