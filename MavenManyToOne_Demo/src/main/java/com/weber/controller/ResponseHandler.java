@@ -15,6 +15,7 @@ import com.weber.LibraryApp;
 import com.weber.dto.BookDTO;
 import com.weber.dto.MemberDTO;
 import com.weber.exception.WeberLibraryException;
+import com.weber.security.SecurityConfig;
 import com.weber.service.LibraryService;
 
 public class ResponseHandler implements HttpHandler {
@@ -33,6 +34,10 @@ public class ResponseHandler implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
+		SecurityConfig.applyCors(exchange);
+		if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
+			return;
+		}
 		String requestMethod = exchange.getRequestMethod();
 		String path = exchange.getRequestURI().getPath();
 
