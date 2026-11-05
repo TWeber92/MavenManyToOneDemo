@@ -205,8 +205,8 @@ public class ResponseHandler implements HttpHandler {
 	public <T> void sendResponse(HttpExchange exchange, T response) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		String jsonResponse = objectMapper.writeValueAsString(response);
-		exchange.sendResponseHeaders(200, jsonResponse.length());
 		exchange.getResponseHeaders().set("Content-Type", "application/json");
+		exchange.sendResponseHeaders(200, jsonResponse.length());
 		OutputStream os = exchange.getResponseBody();
 		os.write(jsonResponse.getBytes());
 		os.close();
