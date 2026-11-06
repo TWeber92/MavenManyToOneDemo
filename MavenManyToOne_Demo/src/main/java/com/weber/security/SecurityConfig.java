@@ -18,8 +18,7 @@ public class SecurityConfig {
         // Handle the preflight request immediately
         if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
             exchange.sendResponseHeaders(204, -1);
-            return true; // Tell the caller we handled it
+            exchange.close(); // Safely close the exchange here
         }
-    	return false;
     }
 }
