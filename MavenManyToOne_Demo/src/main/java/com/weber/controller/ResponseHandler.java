@@ -34,8 +34,7 @@ public class ResponseHandler implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		SecurityConfig.applyCors(exchange);
-		if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
+		if (SecurityConfig.applyCors(exchange)) {
 			return;
 		}
 		String requestMethod = exchange.getRequestMethod();
