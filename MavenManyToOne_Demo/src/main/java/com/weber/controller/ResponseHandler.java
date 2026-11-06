@@ -109,7 +109,7 @@ public class ResponseHandler implements HttpHandler {
 			} else {
 				sendErrorResponse(exchange, 404, "Page Not Found");
 			}
-		} catch (WeberLibraryException e) {
+		} catch (Exception e) {
 			logger.warning("An error has occurred: " + e.getMessage());
 			sendErrorResponse(exchange, 500, e.getMessage());
 		}
