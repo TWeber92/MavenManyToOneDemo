@@ -47,7 +47,7 @@ public class ResponseHandler implements HttpHandler {
 				} else {
 					sendResponse(exchange, response);
 				}
-			} else if ("GET".equalsIgnoreCase(requestMethod) && "/api/library/memberByIsbn".equals(path)) {
+			} else if ("POST".equalsIgnoreCase(requestMethod) && "/api/library/memberByIsbn".equals(path)) {
 				JsonNode jsonNode = objMapper.readTree(exchange.getRequestBody());
 				String isbn = jsonNode.get("isbn").asText();
 				List<MemberDTO> response = selectMemberByISBN(isbn);
