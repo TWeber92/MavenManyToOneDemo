@@ -27,7 +27,7 @@ public class LibraryRepository {
 	}
 	
 	public ResultSet selectMemberByISBN(String isbn) throws SQLException, Exception {
-		String selectSql = "SELECT M.first_name, M.last_name, M.member_id FROM Members M JOIN Books B ON M.member_id = B.memberId WHERE B.isbn = ?";
+		String selectSql = "SELECT M.first_name, M.last_name, M.member_id FROM Members M JOIN Books B ON M.member_id = B.member_id WHERE B.isbn = ?";
 		PreparedStatement preparedStatement = connect(callingClass).prepareStatement(selectSql); 
 		preparedStatement.setString(1, isbn);
 		return preparedStatement.executeQuery();
@@ -58,7 +58,7 @@ public class LibraryRepository {
 		
 	}
 	public int assignMemberToBook(int memberId, String isbn) throws SQLException, Exception {
-		String updateSql = "UPDATE Books SET memberId = ? WHERE isbn = ?";
+		String updateSql = "UPDATE Books SET member_id = ? WHERE isbn = ?";
 		PreparedStatement preparedStatement = connect(callingClass).prepareStatement(updateSql);
 		preparedStatement.setInt(1, memberId);
 		preparedStatement.setString(2, isbn);
