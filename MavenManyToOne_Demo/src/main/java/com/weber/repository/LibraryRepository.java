@@ -12,26 +12,27 @@ import com.weber.model.Member;
 import com.weber.utility.DatabaseConnector;
 
 public class LibraryRepository {
-	
+
 	public String callingClass;
-	
+
 	public LibraryRepository() {
 		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        this.callingClass = stackTrace[2].getClassName(); // Get the class name of the caller
+		this.callingClass = stackTrace[2].getClassName(); // Get the class name of the caller
 	}
-	
+
 	public static Connection connect(String call) throws IOException, Exception {
 		DatabaseConnector connector = new DatabaseConnector();
 		Connection connection = connector.getConnection(call);
 		return connection;
 	}
-	
+
 	public ResultSet selectMemberByISBN(String isbn) throws SQLException, Exception {
 		String selectSql = "SELECT M.first_name, M.last_name, M.member_id FROM Members M JOIN Books B ON M.member_id = B.member_id WHERE B.isbn = ?";
-		PreparedStatement preparedStatement = connect(callingClass).prepareStatement(selectSql); 
+		PreparedStatement preparedStatement = connect(callingClass).prepareStatement(selectSql);
 		preparedStatement.setString(1, isbn);
 		return preparedStatement.executeQuery();
 	}
+
 	public int insertBook(Book book) throws SQLException, Exception {
 		String insertSql = "INSERT INTO Books (title, author, isbn) VALUES (?, ?, ?)";
 		PreparedStatement preparedStatement = connect(callingClass).prepareStatement(insertSql);
@@ -42,11 +43,19 @@ public class LibraryRepository {
 		preparedStatement.close();
 		return result;
 	}
+
+	public ResultSet selectMembers() throws SQLException, Exception {
+		String selectSql = "SELECT * FROM Members";
+		Statement statement = connect(callingClass).createStatement();
+		return statement.executeQuery(selectSql);
+	}
+
 	public ResultSet selectBooks() throws SQLException, Exception {
 		String selectSql = "SELECT * FROM Books";
 		Statement statement = connect(callingClass).createStatement();
 		return statement.executeQuery(selectSql);
 	}
+
 	public int insertMember(Member member) throws SQLException, Exception {
 		String insertSql = "INSERT INTO Members (first_name, last_name) VALUES (?, ?)";
 		PreparedStatement preparedStatement = connect(callingClass).prepareStatement(insertSql);
@@ -55,8 +64,9 @@ public class LibraryRepository {
 		int result = preparedStatement.executeUpdate();
 		preparedStatement.close();
 		return result;
-		
+
 	}
+
 	public int assignMemberToBook(int memberId, String isbn) throws SQLException, Exception {
 		String updateSql = "UPDATE Books SET member_id = ? WHERE isbn = ?";
 		PreparedStatement preparedStatement = connect(callingClass).prepareStatement(updateSql);
@@ -66,6 +76,7 @@ public class LibraryRepository {
 		preparedStatement.close();
 		return result;
 	}
+
 	public int updateBookAuthor(Book book) throws SQLException, Exception {
 		String updateSql = "UPDATE Books SET author = ? WHERE id = ?";
 		PreparedStatement preparedStatement = connect(callingClass).prepareStatement(updateSql);
@@ -75,6 +86,7 @@ public class LibraryRepository {
 		preparedStatement.close();
 		return result;
 	}
+
 	public int deleteBook(int id) throws SQLException, Exception {
 		String deleteSql = "DELETE FROM Books WHERE id = ?";
 		PreparedStatement preparedStatement = connect(callingClass).prepareStatement(deleteSql);

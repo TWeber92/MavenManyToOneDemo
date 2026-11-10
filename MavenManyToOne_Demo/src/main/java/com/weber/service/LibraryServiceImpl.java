@@ -21,14 +21,14 @@ public class LibraryServiceImpl implements LibraryService {
 	}
 
 	public List<MemberDTO> selectMemberByISBN(String isbn) throws SQLException, Exception {
-		Validator.validateBookData(new BookDTO(9, "billy", "jean", isbn));
+		Validator.validateBookData(new BookDTO(1, 9, "billy", "jean", isbn));
 		ResultSet resultSet = repository.selectMemberByISBN(isbn);
 		List<MemberDTO> members = new ArrayList<MemberDTO>();
 		while (resultSet.next()) {
 			MemberDTO member = new MemberDTO();
 			member.setFirstName(resultSet.getString("first_name"));
 			member.setLastName(resultSet.getString("last_name"));
-			member.setMemberId(resultSet.getString("member_id"));
+			member.setMemberId(resultSet.getInt("member_id"));
 			members.add(member);
 		}
 		resultSet.close();
@@ -56,26 +56,42 @@ public class LibraryServiceImpl implements LibraryService {
 		ResultSet resultSet = repository.selectBooks();
 		List<BookDTO> books = new ArrayList<BookDTO>();
 		while (resultSet.next()) {
+			int id = resultSet.getInt("id");
 			int memberId = resultSet.getInt("member_id");
 			String title = resultSet.getString("title");
 			String author = resultSet.getString("author");
 			String isbn = resultSet.getString("isbn");
-			BookDTO book = new BookDTO(memberId, title, author, isbn);
+			BookDTO book = new BookDTO(id, memberId, title, author, isbn);
 			books.add(book);
 		}
 		resultSet.close();
 		return books;
 	}
 
+	public List<MemberDTO> selectMembers() throws SQLException, Exception {
+		ResultSet resultSet = repository.selectMembers();
+		List<MemberDTO> members = new ArrayList<MemberDTO>();
+		while (resultSet.next()) {
+			String firstName = resultSet.getString("first_name");
+			String lastName = resultSet.getString("last_name");
+			int memberId = resultSet.getInt("member_id");
+			MemberDTO member = new MemberDTO(firstName, lastName);
+			member.setMemberId(memberId);
+			members.add(member);
+		}
+		resultSet.close();
+		return members;
+	}
+
 	public int assignMemberToBook(int memberId, String isbn) throws SQLException, Exception {
-		Validator.validateBookData(new BookDTO(9, "billy", "jean", isbn));
+		Validator.validateBookData(new BookDTO(1, 9, "billy", "jean", isbn));
 		return repository.assignMemberToBook(memberId, isbn);
 	}
 
 	public int updateBookAuthor(BookDTO bookDTO) throws SQLException, Exception {
 		Validator.validateBookData(bookDTO);
 		Book book = new Book();
-		book.setId(bookDTO.getMemberId());
+		book.setId(bookDTO.getId());
 		book.setAuthor(bookDTO.getAuthor());
 		return repository.updateBookAuthor(book);
 	}

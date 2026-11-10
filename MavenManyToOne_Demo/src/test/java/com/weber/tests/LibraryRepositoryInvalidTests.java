@@ -15,7 +15,7 @@ import com.weber.exception.WeberLibraryException;
 import com.weber.service.LibraryService;
 import com.weber.service.LibraryServiceImpl;
 
-public class LibraryServiceInvalidTests {
+public class LibraryRepositoryInvalidTests {
 
 	private static ResourceBundle message = ResourceBundle.getBundle("err-messages");
 
@@ -56,8 +56,8 @@ public class LibraryServiceInvalidTests {
 	@Test
 	public void testInvalidAuthor() {
 		List<BookDTO> books = Arrays.asList(
-				new BookDTO(1, "Harry Potter", "*", "1234567890"),
-				new BookDTO(1, "Harry Potter", "", "1234567890"));
+				new BookDTO(1, 2, "Harry Potter", "*", "1234567890"),
+				new BookDTO(1, 2, "Harry Potter", "", "1234567890"));
 		books.forEach(book -> {
 			WeberLibraryException exception = assertThrows(WeberLibraryException.class,
 					() -> libraryService.insertBook(book));
@@ -68,8 +68,8 @@ public class LibraryServiceInvalidTests {
 	@Test
 	public void testInvalidTitle() {
 		List<BookDTO> books = Arrays.asList(
-				new BookDTO(2, "*", "J.K. Rowling", "1234567890"),
-				new BookDTO(2, "", "J.K. Rowling", "1234567890"));
+				new BookDTO(2, 3, "*", "J.K. Rowling", "1234567890"),
+				new BookDTO(2, 3, "", "J.K. Rowling", "1234567890"));
 		books.forEach(book -> {
 			WeberLibraryException exception = assertThrows(WeberLibraryException.class,
 					() -> libraryService.insertBook(book));

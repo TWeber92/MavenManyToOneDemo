@@ -1,15 +1,15 @@
 package com.weber.dto;
 
 public class MemberDTO {
-	
+
 	private String firstName;
 	private String lastName;
-	private String memberId;
-	
+	private int memberId;
+
 	public MemberDTO() {
-		
+
 	}
-	
+
 	public MemberDTO(String firstName, String lastName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -31,11 +31,11 @@ public class MemberDTO {
 		this.lastName = lastName;
 	}
 
-	public String getMemberId() {
+	public int getMemberId() {
 		return memberId;
 	}
 
-	public void setMemberId(String memberId) {
+	public void setMemberId(int memberId) {
 		this.memberId = memberId;
 	}
 

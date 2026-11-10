@@ -6,11 +6,11 @@ public class Book {
 	private String author;
 	private String isbn;
 	private int memberId;
-	
+
 	public Book() {
-		
+
 	}
-	
+
 	public Book(String title, String author, String isbn, int memberId) {
 		this.title = title;
 		this.author = author;
@@ -62,5 +62,5 @@ public class Book {
 	public String toString() {
 		return "Book [title=" + title + ", author=" + author + ", isbn=" + isbn + ", memberId=" + memberId + "]";
 	}
-	
+
 }

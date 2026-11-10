@@ -15,13 +15,12 @@ import com.weber.model.Book;
 import com.weber.model.Member;
 import com.weber.repository.LibraryRepository;
 
-public class LibraryServiceValidTests {
-	
+public class LibraryRepositoryValidTests {
+
 	LibraryRepository repository;
 	Connection connection;
 	Statement statement;
-	
-	
+
 	@Before
 	public void setup() throws Exception {
 		repository = new LibraryRepository();
@@ -31,55 +30,53 @@ public class LibraryServiceValidTests {
 
 	private void initializeInMemoryDatabase() throws Exception {
 
+		statement = connection.createStatement();
 
-	    statement = connection.createStatement();
+		// Create tables and insert test data
+		statement.executeUpdate("CREATE TABLE Members (" +
+				"member_id INT AUTO_INCREMENT PRIMARY KEY, " +
+				"first_name VARCHAR(255), " +
+				"last_name VARCHAR(255))");
 
-	    // Create tables and insert test data
-	    statement.executeUpdate("CREATE TABLE Members (" +
-	        "member_id INT AUTO_INCREMENT PRIMARY KEY, " +
-	        "first_name VARCHAR(255), " +
-	        "last_name VARCHAR(255))");
+		statement.executeUpdate("CREATE TABLE Books (" +
+				"id INT AUTO_INCREMENT PRIMARY KEY, " +
+				"title VARCHAR(255), " +
+				"author VARCHAR(255), " +
+				"isbn VARCHAR(255), " +
+				"member_Id INT, " +
+				"FOREIGN KEY (member_Id) REFERENCES Members(member_id))");
 
-	    statement.executeUpdate("CREATE TABLE Books (" +
-	        "id INT AUTO_INCREMENT PRIMARY KEY, " +
-	        "title VARCHAR(255), " +
-	        "author VARCHAR(255), " +
-	        "isbn VARCHAR(255), " +
-	        "memberId INT, " +
-	        "FOREIGN KEY (memberId) REFERENCES Members(member_id))");
+		statement.executeUpdate("INSERT INTO Members (first_name, last_name) VALUES " +
+				"('John', 'Doe'), " +
+				"('Jane', 'Smith')");
 
-	    statement.executeUpdate("INSERT INTO Members (first_name, last_name) VALUES " +
-	        "('John', 'Doe'), " +
-	        "('Jane', 'Smith')");
+		statement.executeUpdate("INSERT INTO Books (title, author, isbn, member_Id) VALUES " +
+				"('Harry Potter', 'J.K. Rowling', '1234567890', 2)"); // Assuming memberId 1 corresponds to 'John' in
+																		// Members table
 
-	    statement.executeUpdate("INSERT INTO Books (title, author, isbn, memberId) VALUES " +
-	        "('Harry Potter', 'J.K. Rowling', '1234567890', 2)");  // Assuming memberId 1 corresponds to 'John' in Members table
-	    
-	    
 	}
 
-	
 	@Test
 	public void testSelectMemberByIsbn() throws SQLException, Exception {
 		ResultSet members = repository.selectMemberByISBN("1234567890");
-		while(members.next()) {
+		while (members.next()) {
 			String firstName = members.getString("first_name");
 			String lastName = members.getString("last_name");
-			String memberId = members.getString("member_id");
+			int memberId = members.getInt("member_id");
 			assertEquals("Jane", firstName);
 			assertEquals("Smith", lastName);
-			assertEquals("2", memberId);
+			assertEquals(2, memberId);
 		}
 	}
-	
+
 	@Test
 	public void testSelectBooks() throws SQLException, Exception {
 		ResultSet books = repository.selectBooks();
-		while(books.next()) {
+		while (books.next()) {
 			String title = books.getString("title");
 			String author = books.getString("author");
 			String isbn = books.getString("isbn");
-			int memberId = books.getInt("memberId");
+			int memberId = books.getInt("member_Id");
 			int bookId = books.getInt("id");
 			assertEquals("Harry Potter", title);
 			assertEquals("J.K. Rowling", author);
@@ -88,7 +85,7 @@ public class LibraryServiceValidTests {
 			assertEquals(1, bookId);
 		}
 	}
-	
+
 	@Test
 	public void testInsertMember() throws SQLException, Exception {
 		Member member = new Member();
@@ -97,6 +94,7 @@ public class LibraryServiceValidTests {
 		int result = repository.insertMember(member);
 		assertEquals(1, result);
 	}
+
 	@Test
 	public void testInsertBook() throws SQLException, Exception {
 		Book book = new Book();
@@ -106,7 +104,7 @@ public class LibraryServiceValidTests {
 		int result = repository.insertBook(book);
 		assertEquals(1, result);
 	}
-	
+
 	@Test
 	public void testAssignBookToMember() throws SQLException, Exception {
 		int memberId = 1;
@@ -114,8 +112,8 @@ public class LibraryServiceValidTests {
 		int result = repository.assignMemberToBook(memberId, isbn);
 		assertEquals(1, result);
 	}
-	
-	@Test 
+
+	@Test
 	public void testUpdateBook() throws SQLException, Exception {
 		Book book = new Book();
 		book.setId(1);
@@ -125,14 +123,37 @@ public class LibraryServiceValidTests {
 		int result = repository.updateBookAuthor(book);
 		assertEquals(1, result);
 	}
-	
+
 	@Test
 	public void testDeleteBook() throws SQLException, Exception {
 		int id = 1;
 		int result = repository.deleteBook(id);
 		assertEquals(1, result);
 	}
-	
+
+	@Test
+	public void testSelectMembers() throws SQLException, Exception {
+		ResultSet members = repository.selectMembers();
+		int count = 0;
+		while (members.next()) {
+			int memberId = members.getInt("member_id");
+			String firstName = members.getString("first_name");
+			String lastName = members.getString("last_name");
+			if (count == 0) {
+				assertEquals(1, memberId);
+				assertEquals("John", firstName);
+				assertEquals("Doe", lastName);
+			}
+			if (count == 1) {
+				assertEquals(2, memberId);
+				assertEquals("Jane", firstName);
+				assertEquals("Smith", lastName);
+			}
+			count++;
+		}
+		assertEquals(2, count);
+	}
+
 	@After
 	public void tearDown() throws SQLException {
 		statement.executeUpdate("DROP TABLE Books");
@@ -140,6 +161,5 @@ public class LibraryServiceValidTests {
 		statement.close();
 		connection.close();
 	}
-	
-	
+
 }

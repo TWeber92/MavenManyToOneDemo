@@ -47,6 +47,13 @@ public class ResponseHandler implements HttpHandler {
 				} else {
 					sendResponse(exchange, response);
 				}
+			} else if ("GET".equalsIgnoreCase(requestMethod) && "/api/library/members".equals(path)) {
+				List<MemberDTO> response = selectMembers();
+				if (response.isEmpty()) {
+					logWarningAndSendResponse(exchange, 404, message.getString("empty.members"));
+				} else {
+					sendResponse(exchange, response);
+				}
 			} else if ("POST".equalsIgnoreCase(requestMethod) && "/api/library/memberByIsbn".equals(path)) {
 				JsonNode jsonNode = objMapper.readTree(exchange.getRequestBody());
 				String isbn = jsonNode.get("isbn").asText();
@@ -127,6 +134,14 @@ public class ResponseHandler implements HttpHandler {
 	public List<BookDTO> selectBooks() throws WeberLibraryException {
 		try {
 			return libraryService.selectBooks();
+		} catch (Exception e) {
+			throw new WeberLibraryException(e.getMessage());
+		}
+	}
+
+	public List<MemberDTO> selectMembers() throws WeberLibraryException {
+		try {
+			return libraryService.selectMembers();
 		} catch (Exception e) {
 			throw new WeberLibraryException(e.getMessage());
 		}

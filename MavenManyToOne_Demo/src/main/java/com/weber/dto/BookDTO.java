@@ -2,6 +2,7 @@ package com.weber.dto;
 
 public class BookDTO {
 
+	private int id;
 	private int member_id;
 	private String title;
 	private String author;
@@ -11,11 +12,20 @@ public class BookDTO {
 
 	}
 
-	public BookDTO(int member_id, String title, String author, String isbn) {
+	public BookDTO(int id, int member_id, String title, String author, String isbn) {
+		this.id = id;
 		this.member_id = member_id;
 		this.title = title;
 		this.author = author;
 		this.isbn = isbn;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getMemberId() {

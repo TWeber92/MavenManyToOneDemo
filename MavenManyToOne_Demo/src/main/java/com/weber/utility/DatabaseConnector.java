@@ -14,7 +14,7 @@ public class DatabaseConnector {
 	public Connection getConnection(String callingClass) throws IOException, SQLException, WeberLibraryException {
 
 		// 1. Test environment uses H2
-		if ("com.weber.tests.LibraryServiceValidTests".equals(callingClass)) {
+		if ("com.weber.tests.LibraryRepositoryValidTests".equals(callingClass)) {
 			return DriverManager.getConnection("jdbc:h2:mem:test");
 		}
 
